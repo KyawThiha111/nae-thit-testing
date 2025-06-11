@@ -5,9 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
+import { useLangStore } from "@/hooks/useLangStore";
+import { useContactData } from "@/hooks/api/contactdata";
+import ContactUsPageData from "@/components/pages/contactus/Contactdata";
 export default function ContactUsPage() {
-  const { mutate, isPending, isSuccess } = useCreateMessage();
+
+ const { mutate, isPending, isSuccess } = useCreateMessage();
   const contactMethods = [
     {
       icon: (
@@ -103,7 +106,6 @@ export default function ContactUsPage() {
       ],
     },
   ];
-
   const { register, handleSubmit, reset } = useForm<CreateMessagePayload>();
 
   const requestMsg = async (data: CreateMessagePayload) => {
@@ -126,6 +128,7 @@ export default function ContactUsPage() {
     }
   }, [isSuccess]);
 
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -147,53 +150,9 @@ export default function ContactUsPage() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                Get in Touch
-              </h2>
+           <ContactUsPageData/>
 
-              <div className="grid sm:grid-cols-2 gap-6">
-                {contactMethods.map((method, index) => (
-                  <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                    <div className="flex items-center mb-4">
-                      <div className="mr-4">{method.icon}</div>
-                      <h3 className="text-xl font-semibold">{method.title}</h3>
-                    </div>
-                    <ul className="space-y-2">
-                      {method.details.map((detail, i) => (
-                        <li key={i} className="text-gray-600 font-medium">
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8">
-                <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
-                <div className="flex space-x-4">
-                  {social_links.map((social, index) => (
-                    <Link
-                      key={index}
-                      href={social.link}
-                      className="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
-                      aria-label={social.name}
-                      target="_blank"
-                    >
-                      <Image
-                        src={social.icon}
-                        alt={social.name}
-                        width={24}
-                        height={24}
-                      />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Form */}
+            {/* Con/tact Form */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-8">
                 Send Us a Message

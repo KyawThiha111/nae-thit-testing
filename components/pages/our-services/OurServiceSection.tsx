@@ -11,7 +11,9 @@ import { X } from "lucide-react";
 import { useLangStore } from "@/hooks/useLangStore";
 import Image from "next/image";
 import React from "react";
+import { useServices } from "@/hooks/api/services";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const services = [
   "Consultation",
   "Online Pharmacy",
@@ -28,7 +30,30 @@ const services = [
 ];
 
 export default function OurServiceSection() {
-  return (
+  const {lang} = useLangStore()
+   const { data:ServicesData, isLoading, refetch } = useServices({ lang,showonhomepage:"false" });
+   useEffect(()=>{
+    refetch()
+   },[ServicesData,lang])
+   if (isLoading) {
+    return (
+      <>
+        <section className="relative bg-gray-200 text-white py-24 h-[200px]"></section>
+
+        {/* About Description */}
+        <section className="py-16 bg-white" id="background">
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className=" min-h-[200px] bg-gray-200"></div>
+            <div className=" min-h-[200px] lg:h-auto bg-gray-200 rounded-lg"></div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  if (!ServicesData?.services) return <p>Data not found</p>;
+  console.log(`${BACKEND_URL}${ServicesData.services[2].logo}`)
+   return (
     <section className=" py-16 bg-gray-50">
       <div className=" container">
         {/* <div className="relative py-8 max-w-[200px] mx-auto">
@@ -68,38 +93,49 @@ export default function OurServiceSection() {
             </div>
           ))}
         </div> */}
-        <Swiper
-          spaceBetween={20}
-          slidesPerView={1}
-          pagination={{ clickable: true }}
-          modules={[Pagination]}
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 4 },
-          }}
-          className="!pb-10"
-        >
-          {services.map((f, idx) => (
-            <SwiperSlide key={f}>
-              <div className="rounded overflow-hidden shadow-lg">
-                <img
-                  src={"/imgs/default.png"}
-                  alt={f}
-                  className="w-full h-48 object-cover"
-                />
-                <div
-                  className={`p-4 ${
-                    idx === 2 ? "bg-green-300" : "bg-primary"
-                  } text-white`}
-                >
-                  <h3 className="text-lg font-semibold text-center">{f}</h3>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+   <Swiper
+  spaceBetween={20}
+  slidesPerView={1}
+  pagination={{ clickable: true }}
+  modules={[Pagination]}
+  breakpoints={{
+    640: { slidesPerView: 1 },
+    768: { slidesPerView: 2 },
+    1024: { slidesPerView: 3 },
+    1280: { slidesPerView: 4 },
+  }}
+  className="!pb-10"
+>
+  {ServicesData.services.map((service, idx) => {
+    const imageUrl = service.logo ? `${BACKEND_URL}${service.logo}` : null;
+
+    return (
+      <SwiperSlide key={service._id || idx}>
+        <div className="rounded overflow-hidden shadow-lg flex flex-col h-full bg-gray-300">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              className="w-full h-48 object-cover"
+            />
+          ) : (
+            <div className="w-full h-48 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">
+              No Image Available
+            </div>
+          )}
+
+          <div className={`p-4 ${idx === 2 ? "bg-green-300" : "bg-primary"}  text-white flex flex-col justify-center min-h-[100px]`}>
+            <h3 className="text-lg font-semibold text-center line-clamp-2">
+              {service.title}
+            </h3>
+            
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  })}
+</Swiper>
+
+
         <style jsx global>{`
           .swiper-pagination-bullet {
             background-color: #d1d5db; /* gray-300 */
