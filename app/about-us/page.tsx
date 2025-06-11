@@ -4,7 +4,8 @@ import OurMission from "@/components/pages/about-us/OurMission";
 import OurValues from "@/components/pages/about-us/OurValues";
 import Image from "next/image";
 import React from "react";
-
+import TeamMember from "@/components/pages/about-us/Member"
+import TeamLeader from "@/components/pages/about-us/Leader"
 export default function AboutUsPage() {
   const teamMembers = [
     {
@@ -173,36 +174,8 @@ export default function AboutUsPage() {
       <OurValues />
 
       {/* Team */}
-      <section className="py-16 bg-gray-50" id="our-team">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Meet The <span className=" text-primary">Team</span>
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <div
-                key={index}
-                className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  width={500}
-                  height={500}
-                  className="w-full h-auto object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-bold">{member.name}</h3>
-                  <p className="text-secondary font-medium my-2">
-                    {member.role}
-                  </p>
-                  {/* <p className="text-gray-600">{member.bio}</p> */}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TeamLeader/>
+      <TeamMember/>
 
       {/* CTA */}
       {/* <section className="py-16 bg-blue-600 text-white">
