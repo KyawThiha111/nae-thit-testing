@@ -7,7 +7,9 @@ import "swiper/css/pagination";
 import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import Image from "next/image";
 import useTranslation from "@/hooks/useTranslation";
-
+import { useTestimonals } from "@/hooks/api/testimonals";
+import { useLangStore } from "@/hooks/useLangStore";
+import { useEffect } from "react";
 const testimonials = [
   {
     id: 1,
@@ -41,6 +43,28 @@ const testimonials = [
 
 export default function TestimonialsSlider() {
   const { t } = useTranslation();
+  const {lang} = useLangStore();
+  const {data:TestimonalsData, isLoading, refetch} = useTestimonals({lang});
+  useEffect(()=>{
+     refetch()
+   },[lang])
+    if (isLoading) {
+     return (
+       <>
+         <section className="relative bg-gray-200 text-white py-24 h-[200px]"></section>
+ 
+         {/* About Description */}
+         <section className="py-16 bg-white" id="background">
+           <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+             <div className=" min-h-[200px] bg-gray-200"></div>
+             <div className=" min-h-[200px] lg:h-auto bg-gray-200 rounded-lg"></div>
+           </div>
+         </section>
+       </>
+     );
+   }
+ 
+   if (!TestimonalsData?.FormattedResponse.length) return <p>Data not found</p>;
   return (
     <div>
       <div className=" container px-4 py-10">
@@ -78,7 +102,7 @@ export default function TestimonialsSlider() {
           }}
           className="!pb-10"
         >
-          {testimonials.map((t) => (
+          {TestimonalsData.FormattedResponse.map((t,index) => (
             <SwiperSlide key={t.id}>
               <div className="bg-white p-6 rounded-xl text-center">
                 <Image
@@ -88,9 +112,9 @@ export default function TestimonialsSlider() {
                   alt="left"
                   className="mx-auto mb-4"
                 />
-                <p className="italic text-gray-700 mb-4">"{t.message}"</p>
-                <h4 className="font-semibold">{t.name}</h4>
-                <p className="text-sm text-gray-500">{t.location}</p>
+                <p className="italic text-gray-700 mb-4">"{t?.note}"</p>
+                <h4 className="font-semibold">{t?.patient_name}</h4>
+                <p className="text-sm text-gray-500">{t?.patient_type}</p>
               </div>
             </SwiperSlide>
           ))}
