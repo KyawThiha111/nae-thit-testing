@@ -2,8 +2,11 @@
 import DaungMyiSection from "@/components/pages/our-services/DaungMyiSection";
 import OurServiceSection from "@/components/pages/our-services/OurServiceSection";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLangStore } from "@/hooks/useLangStore";
+import { useServiceBanner } from "@/hooks/api/servicebanner";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const threeKeys = [
   {
     title: "Hepatitis",
@@ -31,7 +34,8 @@ export default function OurServicesPage() {
   const [currentImage, setCurrentImage] = useState(0);
 
   const galleryFilters = ["All", "Events", "Volunteers", "Community", "Causes"];
-
+  const {lang} = useLangStore();
+  const {data:ServiceBannerData,isLoading:BannerLoading,refetch} = useServiceBanner({lang});
   const galleryImages = [
     {
       id: 1,
@@ -134,21 +138,43 @@ export default function OurServicesPage() {
     }
   };
 
+  useEffect(()=>{
+    refetch()
+  },[lang])
+
+  if (BannerLoading) {
+    return (
+      <>
+        <section className="relative bg-gray-200 text-white py-24 h-[200px]"></section>
+
+        {/* About Description */}
+        <section className="py-16 bg-white" id="background">
+          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className=" min-h-[200px] bg-gray-200"></div>
+            <div className=" min-h-[200px] lg:h-auto bg-gray-200 rounded-lg"></div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  if (!ServiceBannerData?.data) return <p>Data not found</p>;
   return (
     <div className="min-h-screen pb-10">
       {/* Hero Section */}
-      <section className="relative bg-blue-900 text-white py-24">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            Our Services
-          </h1>
-          <p className="text-xl">
-            We are dedicated to making a positive impact in our community
-            through various services.
-          </p>
-        </div>
-      </section>
+<section
+  className="relative bg-blue-900 text-white py-24 bg-cover bg-center"
+  style={{ backgroundImage: `url('${BACKEND_URL}${ServiceBannerData.data.banner_bg_img}')` }}
+>
+  <div className="absolute inset-0 bg-black opacity-50"></div>
+  <div className="container mx-auto px-4 relative z-10 text-center">
+    <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+      {ServiceBannerData.data.header}
+    </h1>
+    <p className="text-xl">{ServiceBannerData.data.subheader}</p>
+  </div>
+</section>
+
 
       <section className=" py-16">
         <div className=" container">
@@ -198,20 +224,14 @@ export default function OurServicesPage() {
               </h2>
               <div className="space-y-6  text-gray-700">
                 <p>
-                  While non-profits have long focused on primary healthcare
-                  (PHC), Myanmar’s evolving crisis has outpaced this model:
-                  Worsening economic inequality pushes more people into
-                  self-treatment via informal pharmacies, where unregistered,
-                  low-quality medications dominate. Decreased affordability of
-                  specialist visits has led to lower compliance and more
-                  complications.
+                {ServiceBannerData.data.blog1}
                 </p>
               </div>
             </div>
           </div>
           <div className=" min-h-[200px] lg:h-auto bg-gray-200 rounded-lg order-1 lg:order-2">
             <Image
-              src={"/imgs/special.jpg"}
+              src={`${BACKEND_URL}${ServiceBannerData.data.blog1_img}`}
               alt="special"
               width={500}
               height={500}
@@ -225,7 +245,7 @@ export default function OurServicesPage() {
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className=" min-h-[200px] lg:h-auto bg-gray-200 rounded-lg">
             <Image
-              src={"/imgs/affordable.jpg"}
+              src={`${BACKEND_URL}${ServiceBannerData.data.blog2_img}`}
               alt="affordable"
               width={500}
               height={600}
@@ -245,10 +265,7 @@ export default function OurServicesPage() {
               </h3>
               <div className="space-y-6 text-gray-700">
                 <p>
-                  High operational costs, limited access to affordable
-                  technologies, economic disparities among patients, systemic
-                  issues like inadequate healthcare funding, regulatory
-                  barriers, and workforce shortages.
+                  {ServiceBannerData.data.blog2}
                 </p>
               </div>
             </div>
