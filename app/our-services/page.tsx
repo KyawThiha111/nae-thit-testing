@@ -166,7 +166,7 @@ export default function OurServicesPage() {
   className="relative bg-blue-900 text-white py-24 bg-cover bg-center"
   style={{ backgroundImage: `url('${BACKEND_URL}${ServiceBannerData.data.banner_bg_img}')` }}
 >
-  <div className="absolute inset-0 bg-black opacity-50"></div>
+  <div className="absolute inset-0 bg-black opacity-80"></div>
   <div className="container mx-auto px-4 relative z-10 text-center">
     <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
       {ServiceBannerData.data.header}
