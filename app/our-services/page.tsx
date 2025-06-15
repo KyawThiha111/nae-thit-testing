@@ -1,11 +1,15 @@
 "use client";
 import DaungMyiSection from "@/components/pages/our-services/DaungMyiSection";
+import ServiceSection2 from "@/components/pages/our-services/ServiceSection2";
 import OurServiceSection from "@/components/pages/our-services/OurServiceSection";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useLangStore } from "@/hooks/useLangStore";
 import { useServiceBanner } from "@/hooks/api/servicebanner";
-
+import {Swiper,SwiperSlide} from "swiper/react"
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination ,Autoplay} from "swiper/modules";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const threeKeys = [
   {
@@ -211,8 +215,30 @@ export default function OurServicesPage() {
       </section>
 
       <OurServiceSection />
-
-      <DaungMyiSection />
+        
+        {/* DDM section */}
+           <Swiper
+          spaceBetween={20}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          modules={[Pagination,Autoplay]}
+          autoplay={{
+             delay: 5000,     // 3 seconds
+             disableOnInteraction:false
+          }}
+        
+          className="!pb-10"
+        >
+           <SwiperSlide>
+               <DaungMyiSection />
+               
+           </SwiperSlide>
+           <SwiperSlide>
+             <ServiceSection2/>
+               
+           </SwiperSlide>
+        </Swiper>
+    
 
       <section className="py-16 bg-white">
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
