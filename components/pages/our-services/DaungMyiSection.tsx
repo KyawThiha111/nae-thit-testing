@@ -19,7 +19,7 @@ export default function DaungMyiSection() {
           alt="ddm bg"
           width={1920}
           height={1920}
-          className=" w-full h-auto hidden xl:inline-block"
+          className=" w-full h-auto hidden lg:inline-block"
         />
       </div>
       <div className=" xl:absolute w-full h-full top-0 left-0 ">

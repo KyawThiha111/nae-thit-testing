@@ -19,7 +19,7 @@ export default function ServiceSection2() {
           alt="ddm bg"
           width={1920}
           height={1920}
-          className=" w-full h-auto hidden xl:inline-block"
+          className=" w-full h-auto hidden lg:inline-block"
         />
           <div className="absolute inset-0 bg-black opacity-60"></div>
       </div>
