@@ -1,7 +1,5 @@
 import FacilitiesSlider from "@/components/pages/home/Facilities";
-import HeroBanner from "@/components/pages/home/HeroBanner";
-import HomeAboutUs from "@/components/pages/home/HomeAboutUs";
-import HomeIntro from "@/components/pages/home/HomeIntro";
+import HeroBanner from "@/components/pages/home/HeroBanner"
 import HomeServices from "@/components/pages/home/HomeServices";
 import TestimonialsSlider from "@/components/pages/home/Testimonial";
 import Image from "next/image";
@@ -53,45 +51,6 @@ export default function Home() {
       </section> */}
 
       <HeroBanner />
-
-      <HomeAboutUs />
-
-      <section className=" bg-primary py-6 md:py-10">
-        <div className="container">
-          <Image
-            src={"/source/logo_white.png"}
-            alt="Logo"
-            width={300}
-            height={300}
-            priority={true}
-            className="mx-auto w-[200px] h-auto md:w-[300px]"
-          />
-        </div>
-      </section>
-
-      <HomeIntro />
-
-      {/* Statistics */}
-      <section className="bg-primary py-6 ">
-        <div className=" container flex flex-col md:flex-row justify-between text-white text-center gap-5">
-          <div>
-            <p className="text-2xl font-bold">4</p>
-            <p className="text-sm">Years of Service</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold">106,406</p>
-            <p className="text-sm">Total Number of Patients Treated</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold">48</p>
-            <p className="text-sm">Team Members</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold">756,982</p>
-            <p className="text-sm">Total Population Served</p>
-          </div>
-        </div>
-      </section>
 
       {/* Stats Section */}
       {/* <section className="bg-blue-800 text-white py-12">

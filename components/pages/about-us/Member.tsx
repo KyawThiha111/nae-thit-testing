@@ -45,9 +45,9 @@ export default function TeamMember() {
           {TeamMemberData.members.map((member, index) => (
             <div
               key={index}
-              className="bg-white overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
+              className="bg-white overflow-hidden  shadow-xl hover:shadow-2xl transition-all duration-300"
             >
-              <div className="relative w-full aspect-[1/1] bg-blue-400">
+              <div className="relative w-full aspect-[1/1] bg-white">
                 {member.photo ? (
                   <Image
                     src={member.photo}
@@ -65,7 +65,7 @@ export default function TeamMember() {
                 <h3 className="text-xl font-bold text-gray-900">
                   {member.name}
                 </h3>
-                <p className="text-secondary font-medium my-1">
+                <p className="text-secondary  font-bold font-medium my-1">
                   {member.position}
                 </p>
               </div>
