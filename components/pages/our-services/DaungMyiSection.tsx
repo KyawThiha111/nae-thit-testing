@@ -22,8 +22,8 @@ export default function DaungMyiSection() {
           className=" w-full h-auto hidden lg:inline-block"
         />
       </div>
-      <div className=" xl:absolute w-full h-full top-0 left-0 ">
-        <div className="container h-full grid grid-cols-1 xl:grid-cols-2">
+      <div className=" lg:absolute w-full h-full top-0 left-0 ">
+        <div className="container h-full grid grid-cols-1 lg:grid-cols-2">
           <div className=" flex flex-col justify-between">
             <div>
               <Image

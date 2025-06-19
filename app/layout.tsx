@@ -67,7 +67,7 @@ export default async function LocaleLayout({
         <meta name="title" content="Nae Thit Social Enterprise" />
         <meta
           name="description"
-          content="Providing Quality Healthcare with Affordable Solutions"
+          content="An organization Providing Quality Healthcare with Affordable Solutions"
         />
 
         {/* <!-- Open Graph / Facebook --> */}
