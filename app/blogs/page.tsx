@@ -4,8 +4,9 @@ import { useLangStore } from "@/hooks/useLangStore";
 import useTranslation from "@/hooks/useTranslation";
 import { formattedDate } from "@/libs/format.date";
 import Link from "next/link";
-import React, { useEffect } from "react";
-
+import React, { use, useEffect, useState } from "react";
+import { useBlogCata } from "@/hooks/api/blogcata";
+import { usePaginatedBlog } from "@/hooks/api/blogpagi";
 const blogPosts = [
   {
     id: 1,
@@ -65,12 +66,29 @@ const categories = [
 export default function BlogsPage() {
   const { lang } = useLangStore();
   const { t } = useTranslation();
+  const [catagory, setCatagory] = useState<string | null>("events");
+  const [page, setPage] = useState<number>(1);
   const { data: blogData, isLoading, refetch } = useBlogs({ lang });
-
-  useEffect(() => {
-    refetch();
-  }, [lang]);
-
+  const {
+    data: CataData,
+    isLoading: CataLoading,
+    refetch: CataRefetch,
+  } = useBlogCata();
+  const {
+    data: PaginatedBlogData,
+    isLoading: PaginatedLoading,
+    refetch: PagiRefetch,
+  } = usePaginatedBlog({ lang: lang, catagory:catagory, page: page });
+  useEffect(()=>{
+    PagiRefetch()
+  },[catagory,page,lang])
+  if (CataLoading) {
+    return <div>...Loading</div>;
+  }
+  if (!PaginatedBlogData?.blogs) {
+    console.log(PaginatedBlogData)
+    return <div>...No blogs to show for now!</div>;
+  }
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -98,13 +116,16 @@ export default function BlogsPage() {
                 <div className="bg-white p-6 rounded-lg shadow-md sticky top-[110px]">
                   <h3 className="text-xl font-bold mb-4">Categories</h3>
                   <ul className="space-y-2">
-                    {categories.map((category, index) => (
+                    {CataData?.data.map((category, index) => (
                       <li key={index}>
                         <a
+                         onClick={()=>{setCatagory(category.cata_name)}}
                           href="#"
                           className="flex justify-between items-center py-2 px-3 rounded hover:bg-gray-100 transition-colors"
                         >
-                          <span>{category.name}</span>
+                          <span className="text-blue-500 hover:font-bold">
+                            {category.cata_name.toUpperCase()}
+                          </span>
                           {/* <span className="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">
                             {category.count}
                           </span> */}
@@ -158,7 +179,7 @@ export default function BlogsPage() {
               </div>
 
               {/* Blog Posts */}
-              {isLoading ? (
+              {PaginatedLoading ? (
                 <div className=" flex-grow">
                   <div className="grid md:grid-cols-2 gap-8">
                     {blogPosts.map((post) => (
@@ -204,7 +225,7 @@ export default function BlogsPage() {
               ) : (
                 <div className="lg:w-3/4">
                   <div className="grid md:grid-cols-2 gap-8">
-                    {blogData?.blogs?.map((post: TypeOfBlog) => (
+                    {PaginatedBlogData.blogs.map((post) => (
                       <article
                         key={post.id}
                         className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
@@ -224,7 +245,7 @@ export default function BlogsPage() {
                             href={`/blogs/${post.id}`}
                             className="inline-block bg-blue-100 text-blue-600 text-xs font-medium px-2 py-1 rounded mb-3"
                           >
-                            {post.category}
+                            {post.catagory}
                           </Link>
                           <h2 className="text-xl font-bold mb-2 hover:text-blue-600 transition-colors">
                             <Link href={`/blogs/${post.id}`}>{post.title}</Link>
@@ -260,55 +281,28 @@ export default function BlogsPage() {
                   </div>
 
                   {/* Pagination */}
-                  {/* <div className="mt-12 flex justify-center">
-                    <nav className="flex items-center space-x-2">
-                      <a
-                        href="#"
-                        className="px-3 py-1 rounded-md bg-blue-600 text-white"
-                      >
-                        1
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-1 rounded-md hover:bg-gray-100 transition-colors"
-                      >
-                        2
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-1 rounded-md hover:bg-gray-100 transition-colors"
-                      >
-                        3
-                      </a>
-                      <span className="px-3 py-1">...</span>
-                      <a
-                        href="#"
-                        className="px-3 py-1 rounded-md hover:bg-gray-100 transition-colors"
-                      >
-                        8
-                      </a>
-                      <a
-                        href="#"
-                        className="flex items-center px-3 py-1 rounded-md hover:bg-gray-100 transition-colors"
-                      >
-                        Next
-                        <svg
-                          className="w-4 h-4 ml-1"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </a>
-                    </nav>
-                  </div> */}
+                  {PaginatedBlogData?.totalPages >= 2 && (
+                    <div className="mt-12 flex justify-center">
+                      <nav className="flex items-center space-x-2">
+                        {Array.from(
+                          { length: PaginatedBlogData.totalPages },
+                          (_, index) => (
+                            <button
+                              key={index + 1}
+                              onClick={() => setPage(index + 1)}
+                              className={`px-3 py-1 rounded-md ${
+                                page === index + 1
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-gray-200 text-gray-800 hover:bg-blue-100"
+                              }`}
+                            >
+                              {index + 1}
+                            </button>
+                          )
+                        )}
+                      </nav>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
