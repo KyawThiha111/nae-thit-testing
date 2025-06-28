@@ -148,7 +148,7 @@ export default function AboutUsPage() {
             Our <span className=" text-primary">Vision</span>
           </h2>
         </div>
-        <div className=" container grid grid-cols-1 xl:grid-cols-2">
+        <div className=" container grid grid-cols-1 lg:grid-cols-2">
           <div className=" bg-primary text-white p-7">
             <h3 className="text-3xl font-semibold italic">
               " Providing Quality Healthcare with Affordable Solutions "
