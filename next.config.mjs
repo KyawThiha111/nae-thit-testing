@@ -4,8 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "naethitasanv2.onrender.com",
+        hostname: "eise.site",
         port: "",
+        pathname: "/**"
       },
     ],
   },
@@ -14,7 +15,7 @@ const nextConfig = {
       {
         source: "/api/:path*",
         // destination: "https://salpyarzay-innovix.odoo.com/api/:path*", // for production
-        destination: "https://naethitasanv2.onrender.com/:path*", // for development
+        destination: "https://eise.site/:path*", // for development
       },
     ];
   },

@@ -74,7 +74,7 @@ export default function AboutUsBanner() {
           </div>
           <div className=" min-h-[200px] lg:h-auto bg-gray-200 rounded-lg">
             <Image
-              src={data.data.images.backgroundblogimg}
+              src={`${data.data.images.backgroundblogimg}`}
               alt="background"
               width={500}
               height={500}
