@@ -66,7 +66,7 @@ const categories = [
 export default function BlogsPage() {
   const { lang } = useLangStore();
   const { t } = useTranslation();
-  const [catagory, setCatagory] = useState<string | null>("events");
+  const [catagory, setCatagory] = useState<string | null>("all");
   const [page, setPage] = useState<number>(1);
   const { data: blogData, isLoading, refetch } = useBlogs({ lang });
   const {
@@ -85,10 +85,7 @@ export default function BlogsPage() {
   if (CataLoading) {
     return <div>...Loading</div>;
   }
-  if (!PaginatedBlogData?.blogs) {
-    console.log(PaginatedBlogData)
-    return <div>...No blogs to show for now!</div>;
-  }
+  
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -177,10 +174,9 @@ export default function BlogsPage() {
                   </div> */}
                 </div>
               </div>
-
-              {/* Blog Posts */}
-              {PaginatedLoading ? (
-                <div className=" flex-grow">
+            {
+              PaginatedLoading&&(
+                  <div className=" flex-grow">
                   <div className="grid md:grid-cols-2 gap-8">
                     {blogPosts.map((post) => (
                       <article
@@ -222,6 +218,11 @@ export default function BlogsPage() {
                     ))}
                   </div>
                 </div>
+              )
+            }
+              {/* Blog Posts */}
+              {!PaginatedBlogData?.blogs ? (
+               <div>No Blog Posted!</div>
               ) : (
                 <div className="lg:w-3/4">
                   <div className="grid md:grid-cols-2 gap-8">
